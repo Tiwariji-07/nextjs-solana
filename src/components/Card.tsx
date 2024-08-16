@@ -39,7 +39,7 @@ export default function CardWithForm() {
   }, [publicKey, connection, balance]);
   
   return (
-    <Card className="w-[450px]">
+    <Card className=" w-[300px] md:w-[450px] md:h-[310px]">
       <CardHeader>
         <CardTitle>ACCOUNT</CardTitle>
         <CardDescription></CardDescription>
@@ -54,8 +54,8 @@ export default function CardWithForm() {
         <CardDescription>{publicKey?.toString()}</CardDescription>
 
       </CardHeader>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
+      <CardFooter className="flex justify-end ">
+        {/* <Button variant="outline">Cancel</Button> */}
         <WalletMultiButton style={{}} />
       </CardFooter>
     </Card>

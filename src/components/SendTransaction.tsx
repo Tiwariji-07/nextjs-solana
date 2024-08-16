@@ -72,11 +72,16 @@ export default function SendTransaction() {
         setAmount(event.target.value);
     };
 
+    const handleCancel = (event: ChangeEvent<React.MouseEvent>) => {
+        setToKey("");
+        setAmount("");
+    };
+
     return (
-        <Card className="w-[350px]">
+        <Card className="w-[300px] md:w-[450px] md:h-[310px]">
             <CardHeader>
                 <CardTitle>Send SOL</CardTitle>
-                <CardDescription>Enter recipients public key and amount</CardDescription>
+                <CardDescription className="text-black font-bold">* Enter recipients public key and amount</CardDescription>
             </CardHeader>
             <CardContent>
                 <form>
@@ -93,7 +98,7 @@ export default function SendTransaction() {
                 </form>
             </CardContent>
             <CardFooter className="flex justify-between">
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline" onClick={handleCancel}>Cancel</Button>
                 <button className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 border border-black rounded" onClick={handleClick}>
                     Send
                 </button>
