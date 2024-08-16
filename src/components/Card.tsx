@@ -33,7 +33,7 @@ export default function CardWithForm() {
       (async function getBalanceEvery10Seconds() {
         const newBalance = await connection.getBalance(publicKey);
         setBalance(newBalance / LAMPORTS_PER_SOL);
-        setTimeout(getBalanceEvery10Seconds, 100);
+        setTimeout(getBalanceEvery10Seconds, 10000);
       })();
     }
   }, [publicKey, connection, balance]);
@@ -47,7 +47,7 @@ export default function CardWithForm() {
       <CardHeader>
         <CardTitle>Balance</CardTitle>
         {/* <CardDescription>{balance} SOL</CardDescription> */}
-        <CardDescription><p>{connected ? `Balance: ${balance} SOL` : `Balance: 0 SOL`}</p></CardDescription>
+        <CardDescription>{connected ? `Balance: ${balance} SOL` : `Balance: 0 SOL`}</CardDescription>
       </CardHeader>
       <CardHeader>
         <CardTitle>Public Key</CardTitle>
