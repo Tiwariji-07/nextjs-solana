@@ -1,8 +1,8 @@
 import * as React from "react";
-import { useState, ChangeEvent, useCallback ,useMemo} from "react";
+import { useState, ChangeEvent, useCallback, useMemo } from "react";
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import { PublicKey , Connection } from "@solana/web3.js";
+import { PublicKey, Connection } from "@solana/web3.js";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +19,8 @@ import { Label } from "@/components/ui/label";
 export default function SendTransaction() {
     const [tokey, setToKey] = useState<string>("");
     const [amount, setAmount] = useState<string>(""); // State for the amount
+
+    // Memoize the connection object to connect to Devnet
     const connection = useMemo(() => new Connection("https://api.devnet.solana.com"), []);
 
     const { publicKey, sendTransaction } = useWallet();
@@ -44,15 +46,21 @@ export default function SendTransaction() {
                 lamports: lamports,
             }),
         );
-        
+
+        // Set the recent blockhash and fee payer
+        transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+        transaction.feePayer = publicKey;
 
         try {
+            // Simulate the transaction before sending
+            await connection.simulateTransaction(transaction);
+
             const signature = await sendTransaction(transaction, connection);
             await connection.confirmTransaction(signature, 'confirmed');
             alert(`Transaction successful! Signature: ${signature}`);
         } catch (error) {
             console.error('Transaction failed', error);
-            alert('Transaction failed!');
+            alert('Transaction failed! Please check the console for more details.');
         }
     }, [publicKey, sendTransaction, connection, tokey, amount]);
 
