@@ -36,7 +36,7 @@ export default function CardWithForm() {
         setTimeout(getBalanceEvery10Seconds, 100);
       })();
     }
-  }, [publicKey, connection, balance,!connected]);
+  }, [publicKey, connection, balance]);
   
   return (
     <Card className="w-[450px]">

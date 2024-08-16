@@ -4,6 +4,7 @@ import Card from "@/components/Card";
 
  
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import SendTransaction from "@/components/SendTransaction";
  
 export default function Home() {
   
@@ -16,6 +17,9 @@ export default function Home() {
       </div>
       <div>
         <Card />
+      </div>
+      <div>
+        <SendTransaction />
       </div>
     </main>
   );
