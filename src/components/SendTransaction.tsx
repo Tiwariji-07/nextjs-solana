@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, ChangeEvent, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { PublicKey, Connection } from "@solana/web3.js";
@@ -64,15 +64,15 @@ export default function SendTransaction() {
         }
     }, [publicKey, sendTransaction, connection, tokey, amount]);
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setToKey(event.target.value);
     };
 
-    const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAmount(event.target.value);
     };
 
-    const handleCancel = (event: ChangeEvent<React.MouseEvent>) => {
+    const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
         setToKey("");
         setAmount("");
     };
