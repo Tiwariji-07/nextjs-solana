@@ -44,6 +44,7 @@ export default function SendTransaction() {
                 lamports: lamports,
             }),
         );
+        
 
         try {
             const signature = await sendTransaction(transaction, connection);
