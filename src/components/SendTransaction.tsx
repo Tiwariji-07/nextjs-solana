@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, ChangeEvent, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { PublicKey, Connection } from "@solana/web3.js";
@@ -64,19 +64,24 @@ export default function SendTransaction() {
         }
     }, [publicKey, sendTransaction, connection, tokey, amount]);
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setToKey(event.target.value);
     };
 
-    const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAmount(event.target.value);
     };
 
+    const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setToKey("");
+        setAmount("");
+    };
+
     return (
-        <Card className="w-[350px]">
+        <Card className="w-[300px] md:w-[450px] md:h-[310px]">
             <CardHeader>
                 <CardTitle>Send SOL</CardTitle>
-                <CardDescription>Enter recipients public key and amount</CardDescription>
+                <CardDescription className="text-black font-bold">* Enter recipients public key and amount</CardDescription>
             </CardHeader>
             <CardContent>
                 <form>
@@ -93,7 +98,7 @@ export default function SendTransaction() {
                 </form>
             </CardContent>
             <CardFooter className="flex justify-between">
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline" onClick={handleCancel}>Cancel</Button>
                 <button className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 border border-black rounded" onClick={handleClick}>
                     Send
                 </button>
