@@ -17,7 +17,7 @@ export default function CardWithForm() {
   const { connection } = useConnection();
   const { publicKey, connected } = useWallet();
   const [balance, setBalance] = useState<number>(0);
-  const [mounted, setMounted] = useState(false);  // State to track if the component is mounted
+  const [mounted, setMounted] = useState(false); // State to track if the component is mounted
 
   // Function to fetch balance
   const fetchBalance = useCallback(async () => {
@@ -45,20 +45,32 @@ export default function CardWithForm() {
         <CardTitle>ACCOUNT</CardTitle>
         <CardDescription></CardDescription>
       </CardHeader>
-      <CardHeader>
-        <CardTitle>Balance</CardTitle>
-        <div className="flex justify-between items-center">
 
-        <CardDescription>{connected ? `Balance: ${balance} SOL` : `Balance: 0 SOL`}</CardDescription>
-        <Button variant="outline" onClick={fetchBalance}>Check Balance</Button>
-        </div>
-      </CardHeader>
-      <CardHeader>
-        <CardTitle>Public Key</CardTitle>
-        <CardDescription>{publicKey?.toString()}</CardDescription>
-      </CardHeader>
+      {connected ? (
+        <>
+          <CardHeader>
+            <CardTitle>Balance</CardTitle>
+            <div className="flex justify-between items-center">
+              <CardDescription>{`Balance: ${balance} SOL`}</CardDescription>
+              <Button variant="outline" onClick={fetchBalance}>
+                Check Balance
+              </Button>
+            </div>
+          </CardHeader>
+          <CardHeader>
+            <CardTitle>Public Key</CardTitle>
+            <CardDescription>{publicKey?.toString()}</CardDescription>
+          </CardHeader>
+        </>
+      ) : (
+        <CardHeader>
+          <CardTitle>Connect Your Wallet</CardTitle>
+          <CardDescription>Please connect your wallet to view details.</CardDescription>
+        </CardHeader>
+      )}
+
       <CardFooter className="flex justify-end">
-        {mounted && <WalletMultiButton />}  {/* Render the button only after component is mounted */}
+        {mounted && <WalletMultiButton />} {/* Render the button only after component is mounted */}
       </CardFooter>
     </Card>
   );
