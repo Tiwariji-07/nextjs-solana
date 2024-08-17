@@ -20,7 +20,7 @@ export default function SendTransaction() {
     const [tokey, setToKey] = useState<string>("");
     const [amount, setAmount] = useState<string>(""); // State for the amount
 
-    // Memoize the connection object to connect to Devnet
+    // Use the default Solana Devnet RPC endpoint for better reliability
     const connection = useMemo(() => new Connection("https://api.devnet.solana.com"), []);
 
     const { publicKey, sendTransaction } = useWallet();
