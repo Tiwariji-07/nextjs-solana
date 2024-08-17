@@ -18,9 +18,8 @@ import { Label } from "@/components/ui/label";
 
 export default function SendTransaction() {
     const [tokey, setToKey] = useState<string>("");
-    const [amount, setAmount] = useState<string>(""); // State for the amount
+    const [amount, setAmount] = useState<string>("");
 
-    // Use the default Solana Devnet RPC endpoint for better reliability
     const connection = useMemo(() => new Connection("https://api.devnet.solana.com"), []);
 
     const { publicKey, sendTransaction } = useWallet();
@@ -32,7 +31,7 @@ export default function SendTransaction() {
         }
 
         const toPubkey = new PublicKey(tokey);
-        const lamports = parseFloat(amount) * LAMPORTS_PER_SOL; // Convert SOL to lamports
+        const lamports = parseFloat(amount) * LAMPORTS_PER_SOL;
 
         if (isNaN(lamports) || lamports <= 0) {
             alert('Please enter a valid amount.');
@@ -47,11 +46,12 @@ export default function SendTransaction() {
             }),
         );
 
-        // Set the recent blockhash and fee payer
-        transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-        transaction.feePayer = publicKey;
-
         try {
+            // Fetch and set the recent blockhash and fee payer
+            const { blockhash } = await connection.getLatestBlockhash();
+            transaction.recentBlockhash = blockhash;
+            transaction.feePayer = publicKey;
+
             // Simulate the transaction before sending
             await connection.simulateTransaction(transaction);
 
@@ -72,7 +72,7 @@ export default function SendTransaction() {
         setAmount(event.target.value);
     };
 
-    const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleCancel = () => {
         setToKey("");
         setAmount("");
     };
@@ -81,7 +81,9 @@ export default function SendTransaction() {
         <Card className="w-[300px] md:w-[450px] md:h-[310px]">
             <CardHeader>
                 <CardTitle>Send SOL</CardTitle>
-                <CardDescription className="text-black font-bold">* Enter recipients public key and amount</CardDescription>
+                <CardDescription className="text-black font-bold">
+                    {`* Enter recipient's public key and amount`}
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 <form>
