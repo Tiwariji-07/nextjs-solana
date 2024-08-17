@@ -1,42 +1,43 @@
 import * as React from "react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { useEffect, useState } from "react";
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { useCallback, useEffect, useState } from "react";
 
 export default function CardWithForm() {
   const { connection } = useConnection();
   const { publicKey, connected } = useWallet();
   const [balance, setBalance] = useState<number>(0);
-  const [isClient, setIsClient] = useState(false);
+  const [mounted, setMounted] = useState(false);  // State to track if the component is mounted
 
-  // Set isClient to true after the component mounts
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const fetchBalance = async () => {
+  // Function to fetch balance
+  const fetchBalance = useCallback(async () => {
     if (publicKey) {
-<<<<<<< HEAD
       const newBalance = await connection.getBalance(publicKey);
       setBalance(newBalance / LAMPORTS_PER_SOL);
-=======
-      (async function getBalanceEvery10Seconds() {
-        const newBalance = await connection.getBalance(publicKey);
-        setBalance(newBalance / LAMPORTS_PER_SOL);
-        setTimeout(getBalanceEvery10Seconds, 10000);
-      })();
->>>>>>> 33028a26c1777acb6cac899378c4bdc407558d3a
     }
-  };
+  }, [publicKey, connection]);
 
+  // Automatically update balance when the user connects their wallet
   useEffect(() => {
     if (connected) {
       fetchBalance();
     }
-  }, [connected]);
+  }, [connected, fetchBalance]);
+
+  // Set mounted to true when the component mounts
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <Card className="w-[300px] md:w-[450px] md:h-[310px]">
@@ -46,22 +47,18 @@ export default function CardWithForm() {
       </CardHeader>
       <CardHeader>
         <CardTitle>Balance</CardTitle>
-<<<<<<< HEAD
-        <div className="flex justify-between items-center ">
+        <div className="flex justify-between items-center">
+
         <CardDescription>{connected ? `Balance: ${balance} SOL` : `Balance: 0 SOL`}</CardDescription>
         <Button variant="outline" onClick={fetchBalance}>Check Balance</Button>
         </div>
-=======
-        {/* <CardDescription>{balance} SOL</CardDescription> */}
-        <CardDescription>{connected ? `Balance: ${balance} SOL` : `Balance: 0 SOL`}</CardDescription>
->>>>>>> 33028a26c1777acb6cac899378c4bdc407558d3a
       </CardHeader>
       <CardHeader>
         <CardTitle>Public Key</CardTitle>
         <CardDescription>{publicKey?.toString()}</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-end">
-        {isClient && <WalletMultiButton />}
+        {mounted && <WalletMultiButton />}  {/* Render the button only after component is mounted */}
       </CardFooter>
     </Card>
   );
