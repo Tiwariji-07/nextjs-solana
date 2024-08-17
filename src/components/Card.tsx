@@ -19,8 +19,16 @@ export default function CardWithForm() {
 
   const fetchBalance = async () => {
     if (publicKey) {
+<<<<<<< HEAD
       const newBalance = await connection.getBalance(publicKey);
       setBalance(newBalance / LAMPORTS_PER_SOL);
+=======
+      (async function getBalanceEvery10Seconds() {
+        const newBalance = await connection.getBalance(publicKey);
+        setBalance(newBalance / LAMPORTS_PER_SOL);
+        setTimeout(getBalanceEvery10Seconds, 10000);
+      })();
+>>>>>>> 33028a26c1777acb6cac899378c4bdc407558d3a
     }
   };
 
@@ -38,10 +46,15 @@ export default function CardWithForm() {
       </CardHeader>
       <CardHeader>
         <CardTitle>Balance</CardTitle>
+<<<<<<< HEAD
         <div className="flex justify-between items-center ">
         <CardDescription>{connected ? `Balance: ${balance} SOL` : `Balance: 0 SOL`}</CardDescription>
         <Button variant="outline" onClick={fetchBalance}>Check Balance</Button>
         </div>
+=======
+        {/* <CardDescription>{balance} SOL</CardDescription> */}
+        <CardDescription>{connected ? `Balance: ${balance} SOL` : `Balance: 0 SOL`}</CardDescription>
+>>>>>>> 33028a26c1777acb6cac899378c4bdc407558d3a
       </CardHeader>
       <CardHeader>
         <CardTitle>Public Key</CardTitle>
